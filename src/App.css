@@ -1,22 +1,44 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+#container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  margin: 50px;
+}
+
+#trash-can {
+  width: 50px;
+  height: 50px;
+  margin: 0 30px;
+  background-color: maroon;
+  text-align: center;
+  line-height: 3rem;
   color: white;
 }
 
-.App-link {
-  color: #09d3ac;
+#note-board {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 600px;
+  background-color: burlywood;
+  height: 90vh;
+  padding: 10px 0;
+}
+
+#add-note-button {
+  border: none;
+  background-color: maroon;
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  color: white;
+  font-size: 2rem;
+  margin: 0 30px;
+}
+
+.note {
+  width: 90%;
+  height: 100px;
+  background-color: white;
+  margin: 10px 0;
 }
