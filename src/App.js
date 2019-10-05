@@ -3,52 +3,75 @@ import React, { Component } from 'react';
 import './App.css';
 
 class App extends Component {
-  constructor() {
-    super();
+    constructor() {
+        super();
 
-    this.state = {
-      notes: [],
+        this.state = {
+            notes: [],
+        }
     }
-  }
 
-  clone = (items) => items.map(item => Array.isArray(item) ? this.clone(item) : item);
+    clone = (items) => items.map(item => Array.isArray(item) ? this.clone(item) : item);
 
-  renderNotes = (notes) => {
-    return notes.map((note) => {
-      return <div className="note"></div>
-    });
-  }
+    renderNotes = (notes) => {
+        return notes.map((note) => {
+            return <div key={note.id} className="note" draggable={true} onDragStart={(e) => this.handleDragStart(e, note.id)}></div>
+        });
+    }
 
-  handleCreateNote = () => {
-    console.log(">>> got here");
-    
-    const { notes } = this.state;
+    handleCreateNote = () => {
+        const { notes } = this.state;
 
-    let _notes = this.clone(notes);
+        let _notes = this.clone(notes);
 
-    _notes.unshift({
-      header: '',
-      note: '',
-    });
+        _notes.unshift({
+            id: Date.now().toString(),
+            header: '',
+            note: '',
+        });
 
-    this.setState({
-      notes: _notes
-    }, () => console.log(this.state.notes));
-  }
+        this.setState({
+            notes: _notes
+        });
+    }
 
-  render() {
-    const { notes } = this.state;
+    handleDragStart(event, noteId) {
+        event.dataTransfer.setData("text/plain", noteId);
+    }
 
-    return (
-     <div id="container">
-       <div id="trash-can" >trash</div>
-       <div id="note-board">
-         {this.renderNotes(notes)}
-       </div>
-       <button id="add-note-button" onClick={this.handleCreateNote}>+</button>
-     </div>
-   );
-  }
+    handleDragOver(event) {
+        event.preventDefault();
+    }
+
+    handleDeleteNote(event) {
+        const { notes } = this.state;
+        let _notes = this.clone(notes);
+
+        const noteId = event.dataTransfer.getData("text");
+
+        let result = _notes.filter((note) => note.id !== noteId);
+
+        this.setState({
+            notes: result
+        });
+    }
+
+    render() {
+        const { notes } = this.state;
+
+        return (
+            <div id="container">
+                <div id="note-board">
+                    {this.renderNotes(notes)}
+                </div>
+                <div
+                    id="trash-can"
+                    onDragOver={(e) => this.handleDragOver(e)}
+                    onDrop={(e) => this.handleDeleteNote(e)} >trash</div>
+                <button id="add-note-button" onClick={this.handleCreateNote}>+</button>
+            </div>
+        );
+    }
 }
 
 export default App;

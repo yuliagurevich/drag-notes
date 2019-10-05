@@ -1,15 +1,24 @@
+:root {
+  --main-back: #80838C;
+}
+
+body {
+  background-color: var(--main-back);
+}
+
 #container {
   display: flex;
   align-items: flex-end;
-  justify-content: center;
-  margin: 50px;
+  justify-content: start;
+  height: 100%;
 }
 
 #trash-can {
   width: 50px;
   height: 50px;
   margin: 0 30px;
-  background-color: maroon;
+  background-color: #8C4126;
+  box-shadow: 1px 1px 2px #595736;
   text-align: center;
   line-height: 3rem;
   color: white;
@@ -18,27 +27,30 @@
 #note-board {
   display: flex;
   flex-direction: column;
+  flex-wrap: nowrap;
   align-items: center;
-  width: 600px;
-  background-color: burlywood;
-  height: 90vh;
+  width: 240px;
+  height: calc(100vh - 20px);
+  background-color: #F2F2F0;
   padding: 10px 0;
 }
 
 #add-note-button {
   border: none;
-  background-color: maroon;
+  background-color: #8C4126;
   width: 50px;
   height: 50px;
   border-radius: 25px;
   color: white;
+  box-shadow: 1px 1px 5px #80838C;
   font-size: 2rem;
   margin: 0 30px;
 }
 
 .note {
-  width: 90%;
-  height: 100px;
-  background-color: white;
+  width: 200px;
+  height: 200px;
+  background-color: #D99B66;
+  box-shadow: 1px 1px 5px #80838C;
   margin: 10px 0;
 }
