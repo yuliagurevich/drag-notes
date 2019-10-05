@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import Note from './Note/Note';
+
 import './App.css';
 
 class App extends Component {
@@ -15,7 +17,7 @@ class App extends Component {
 
     renderNotes = (notes) => {
         return notes.map((note) => {
-            return <div key={note.id} className="note" draggable={true} onDragStart={(e) => this.handleDragStart(e, note.id)}></div>
+            return <Note key={note.id} note={note} onDragStart={this.handleDragStart} />
         });
     }
 

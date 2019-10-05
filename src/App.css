@@ -9,7 +9,7 @@ body {
 #container {
   display: flex;
   align-items: flex-end;
-  justify-content: start;
+  justify-content: flex-start;
   height: 100%;
 }
 
@@ -45,12 +45,4 @@ body {
   box-shadow: 1px 1px 5px #80838C;
   font-size: 2rem;
   margin: 0 30px;
-}
-
-.note {
-  width: 200px;
-  height: 200px;
-  background-color: #D99B66;
-  box-shadow: 1px 1px 5px #80838C;
-  margin: 10px 0;
 }
