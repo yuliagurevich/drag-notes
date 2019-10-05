@@ -17,7 +17,7 @@ class App extends Component {
 
     renderNotes = (notes) => {
         return notes.map((note) => {
-            return <Note key={note.id} note={note} onDragStart={this.handleDragStart} />
+            return <Note key={note.id} note={note} handleDragStart={this.handleDragStart} />
         });
     }
 
