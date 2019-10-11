@@ -1,4 +1,5 @@
 import React, { Component, Profiler, useCallback } from 'react';
+import { TransitionGroup } from 'react-transition-group';
 
 import Note from './Note/Note';
 
@@ -7,12 +8,11 @@ import withHoc from './hoc_2/withHoc';
 
 import './App.css';
 
-const date = new Date();
-
 const initNotes = [{
-    id: date,
-    header: date,
+    id: Date.now().toString(),
+    header: new Date(),
     text: '',
+    isVisible: true,
 }];
 
 class App extends Component {
@@ -28,35 +28,32 @@ class App extends Component {
         this.renderNotes = this.renderNotes.bind(this);
         this.handleNoteTextChange = this.handleNoteTextChange.bind(this);
         this.handleDragOver = this.handleDragOver.bind(this);
+        this.handleNoteDrop = this.handleNoteDrop.bind(this);
         this.handleDeleteNote = this.handleDeleteNote.bind(this);
     }
 
-    clone = (items) => items.map(item => Array.isArray(item) ? this.clone(item) : item);
+    // clone = (items) => items.map(item => Array.isArray(item) ? this.clone(item) : item);
     
     handleCreateNote () {
         const { notes } = this.state;
-        
-        let _notes = this.clone(notes);
+        let _notes = [...notes];
 
-        const date = new Date();
-        
         _notes.push({
-            id: date,
-            header: date,
+            id: Date.now().toString(),
+            header: new Date(),
             text: '',
+            isVisible: true,
         });
         
         this.setState((state) => {
             return {
                 notes: _notes,
-                createdNotes: state.createdNotes + 1
+                createdNotes: state.createdNotes + 1,
             }
         });
     }
 
     handleNoteTextChange (event, noteId) {
-        console.log(noteId);
-        
         const { notes } = this.state;
         let _notes = [...notes];
 
@@ -76,17 +73,33 @@ class App extends Component {
         event.preventDefault();
     }
     
-    handleDeleteNote(event) {
+    handleNoteDrop(event) {
         const { notes } = this.state;
-        let _notes = this.clone(notes);
+        let _notes = [...notes];
         
         const noteId = event.dataTransfer.getData("text");
-        
-        let result = _notes.filter((note) => note.id !== noteId);
-        
-        this.setState({
-            notes: result
+        let note = _notes.find((note) => note.id === noteId);
+        note.isVisible = false;
+
+        this.setState(() => {
+            return {
+                notes: _notes,
+            };
+        }, () => {
+            this.handleDeleteNote(noteId)
         });
+    }
+
+    handleDeleteNote(noteId) {
+        const { notes } = this.state;
+        let _notes = [...notes];
+        
+        let updatedNotes = _notes.filter(note => note.id !== noteId);
+        this.setState(() => {
+            return {
+                notes: updatedNotes,
+            }
+        })
     }
 
     handleRender (id, phase, actualDuration, baseDuration, startTime, commitTime, interactions) {
@@ -101,6 +114,7 @@ class App extends Component {
                     noteId={note.id}
                     noteHeader={note.header}
                     noteText={note.text}
+                    isVisible={note.isVisible}
                     onNoteTextChange={this.handleNoteTextChange}
                     onDragStart={this.handleDragStart}
                 />
@@ -110,24 +124,21 @@ class App extends Component {
     
     render() {
         console.log(`[App.js] render runs...`);
-        
         const { notes } = this.state;
 
         return (
-            
                 <div id="container">
-                    <div id="note-board">
+                    <TransitionGroup component={'div'} id="note-board">
                         {this.renderNotes(notes)}
-                    </div>
+                    </TransitionGroup>
                     <div
                         id="trash-can"
                         onDragOver={this.handleDragOver}
-                        onDrop={this.handleDeleteNote}
+                        onDrop={this.handleNoteDrop}
                     >trash
                     </div>
                     <button id="add-note-button" onClick={this.handleCreateNote}>+</button>
                 </div>
-            
         );
     }
 }

@@ -1,6 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Caveat&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Mansalva&display=swap');
-@import url('https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c|Montserrat&display=swap');
 
 .Note {
     width: 200px;
@@ -9,19 +7,6 @@
     box-shadow: 1px 1px 5px #80838C;
     margin: 10px 0;
     font-family: 'Mansalva', cursive;
-}
-
-.AddNote {
-    animation: addNote 300ms ease-out forwards;
-}
-
-@keyframes addNote {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
 }
 
 .NoteHeader {
@@ -46,4 +31,31 @@
 
 .NoteTextArea:focus {
     outline: none;
+}
+
+.StartAddNote {
+    opacity: 0;
+}
+
+.AddNote {
+    opacity: 1;
+    transition: opacity 300ms ease-out;
+}
+
+.StartDeleteNote {
+    opacity: 1;
+}
+
+.DeleteNote {
+    opacity: 0;
+    transition: opacity 300ms ease-in;
+}
+
+@keyframes showNote {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }

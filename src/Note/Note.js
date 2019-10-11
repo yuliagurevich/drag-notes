@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import CSSTransition from 'react-transition-group/CSSTransition';
+import { CSSTransition } from 'react-transition-group';
 
 import styles from './Note.module.css';
 
@@ -8,6 +8,7 @@ const Note = (props) => {
         noteId,
         noteHeader,
         noteText,
+        isVisible,
         onNoteTextChange,
         onDragStart,
     } = props;
@@ -21,26 +22,29 @@ const Note = (props) => {
     };
 
     const transitionTiming = {
+        appear: 300,
         enter: 300,
-        exit: 1000,
+        exit: 300,
     };
 
     const transitionClasses = {
-        enter: '',
-        enterActive: '',
-        exit: '',
-        exitActive: '',
-        appear: styles.AddNote,
+        appear: styles.StartAddNote,
+        appearActive: styles.AddNote,
+        enter: styles.StartAddNote,
+        enterActive: styles.AddNote,
+        exit: styles.StartDeleteNote,
+        exitActive: styles.DeleteNote,
     };
     
     return (
         <CSSTransition
-        appear={true}
-        mountOnEnter
-        unmountOnExit
-        timeout={transitionTiming}
-        in={noteId !== undefined}
-        classNames={transitionClasses}
+            appear={true}
+            exit
+            mountOnEnter
+            unmountOnExit
+            timeout={transitionTiming}
+            in={isVisible}
+            classNames={transitionClasses}
         >
             <div
                 style={style}
@@ -64,7 +68,8 @@ const Note = (props) => {
 const areEqual = (prevProps, nextProps) => {
     return (
         prevProps.noteText === nextProps.noteText &&
-        prevProps.noteHeader === nextProps.noteHeader
+        prevProps.noteHeader === nextProps.noteHeader &&
+        prevProps.isVisible === nextProps.isVisible
     );
 }
 
