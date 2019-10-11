@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Profiler, useCallback } from 'react';
 
 import Note from './Note/Note';
 
@@ -7,10 +7,12 @@ import withHoc from './hoc_2/withHoc';
 
 import './App.css';
 
+const id = Date.now().toString();
+
 const initNotes = [{
-    id: Date.now().toString(),
-    header: '',
-    note: '',
+    id: id,
+    header: id,
+    text: '',
 }];
 
 class App extends Component {
@@ -21,26 +23,48 @@ class App extends Component {
             notes: props.data,
             createdNotes: 0,
         }
+
+        this.handleCreateNote = this.handleCreateNote.bind(this);
+        this.renderNotes = this.renderNotes.bind(this);
+        this.handleNoteTextChange = this.handleNoteTextChange.bind(this);
+        this.handleDragOver = this.handleDragOver.bind(this);
+        this.handleDeleteNote = this.handleDeleteNote.bind(this);
     }
 
     clone = (items) => items.map(item => Array.isArray(item) ? this.clone(item) : item);
     
-    handleCreateNote = () => {
+    handleCreateNote () {
         const { notes } = this.state;
         
         let _notes = this.clone(notes);
+
+        const id = Date.now().toString()
         
-        _notes.unshift({
-            id: Date.now().toString(),
-            header: '',
-            note: '',
+        _notes.push({
+            id: id,
+            header: id,
+            text: '',
         });
         
-        this.setState((state, props) => {
+        this.setState((state) => {
             return {
                 notes: _notes,
                 createdNotes: state.createdNotes + 1
             }
+        });
+    }
+
+    handleNoteTextChange (event, noteId) {
+        console.log(noteId);
+        
+        const { notes } = this.state;
+        let _notes = [...notes];
+
+        let note = _notes.find((note) => note.id === noteId);
+        note.text = event.target.value;
+
+        this.setState(() => {
+            return { notes: _notes }
         });
     }
     
@@ -64,10 +88,23 @@ class App extends Component {
             notes: result
         });
     }
+
+    handleRender (id, phase, actualDuration, baseDuration, startTime, commitTime, interactions) {
+        console.log(id, phase, actualDuration, baseDuration, startTime, commitTime, interactions);
+    }
     
-    renderNotes = (notes) => {
+    renderNotes(notes) {
         return notes.map((note) => {
-            return <WithHoc key={note.id}><Note note={note} handleDragStart={this.handleDragStart} /></WithHoc>
+            return (
+                <Note
+                    key={note.id}
+                    noteId={note.id}
+                    noteHeader={note.header}
+                    noteText={note.text}
+                    onNoteTextChange={this.handleNoteTextChange}
+                    onDragStart={this.handleDragStart}
+                />
+            );
         });
     }
     
@@ -77,20 +114,25 @@ class App extends Component {
         const { notes } = this.state;
 
         return (
-            <React.StrictMode>
+            
                 <div id="container">
                     <div id="note-board">
                         {this.renderNotes(notes)}
                     </div>
                     <div
                         id="trash-can"
-                        onDragOver={(e) => this.handleDragOver(e)}
-                        onDrop={(e) => this.handleDeleteNote(e)} >trash</div>
+                        onDragOver={this.handleDragOver}
+                        onDrop={this.handleDeleteNote}
+                    >trash
+                    </div>
                     <button id="add-note-button" onClick={this.handleCreateNote}>+</button>
                 </div>
-            </React.StrictMode>
+            
         );
     }
 }
 
 export default withHoc(App, initNotes);
+
+{/* <Profiler id="app" onRender={this.handleRender}></Profiler>
+</Profiler> */}

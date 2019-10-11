@@ -1,7 +1,49 @@
-.note {
+@import url('https://fonts.googleapis.com/css?family=Caveat&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Mansalva&display=swap');
+@import url('https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c|Montserrat&display=swap');
+
+.Note {
     width: 200px;
     height: 200px;
     background-color: #D99B66;
     box-shadow: 1px 1px 5px #80838C;
     margin: 10px 0;
+    font-family: 'Mansalva', cursive;
+}
+
+.AddNote {
+    animation: addNote 300ms ease-out forwards;
+}
+
+@keyframes addNote {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.NoteHeader {
+    box-sizing: border-box;
+    padding: 5px;
+    margin: 0;
+    font-size: 1.5rem;
+    height: 20%;
+}
+
+.NoteTextArea {
+    box-sizing: border-box;
+    width: 100%;
+    height: 80%;
+    resize: none;
+    border: none;
+    background-color: rgba(255,255,255,0);
+    padding: 5px;
+    font-family: inherit;
+    font-size: 1.3rem;
+}
+
+.NoteTextArea:focus {
+    outline: none;
 }
