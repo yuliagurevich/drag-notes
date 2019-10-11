@@ -7,11 +7,11 @@ import withHoc from './hoc_2/withHoc';
 
 import './App.css';
 
-const id = Date.now().toString();
+const date = new Date();
 
 const initNotes = [{
-    id: id,
-    header: id,
+    id: date,
+    header: date,
     text: '',
 }];
 
@@ -38,11 +38,11 @@ class App extends Component {
         
         let _notes = this.clone(notes);
 
-        const id = Date.now().toString()
+        const date = new Date();
         
         _notes.push({
-            id: id,
-            header: id,
+            id: date,
+            header: date,
             text: '',
         });
         

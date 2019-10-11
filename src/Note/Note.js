@@ -49,7 +49,7 @@ const Note = (props) => {
                 onDragStart={(event) => onDragStart(event, noteId)}
             >
                 <h1 className={styles.NoteHeader}>
-                    {noteHeader}
+                    {noteHeader.toLocaleString('he-IL', { timeZone: 'UTC' })}
                 </h1>
                 <textarea
                     className={styles.NoteTextArea}
